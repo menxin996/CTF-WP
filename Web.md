@@ -12,7 +12,7 @@
 
 学会使用浏览器的F12(CTRL+U)功能。
 
-![12](https://github.com/menxin996/CTF-WP/tree/master/Picture/1.png)
+![12](Picture/1.png)
 
 ```python
 #解决方法：
