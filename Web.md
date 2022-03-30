@@ -12,7 +12,7 @@
 
 学会使用浏览器的F12(CTRL+U)功能。
 
-![12](E:\Study\渗透分析和漏洞测试\CTF题解\Picture\1.png)
+![12](../../../tree/master/Picture/1.png)
 
 ```python
 #解决方法：
