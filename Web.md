@@ -1,11 +1,11 @@
 **1.模板注入**
 
 ```python
-#模板：简单理解类似于作文模板，只需要往里面填写需要的参数。
-#SSTI:1.python的一些框架：jinja2 mako tornado django
+# 模板：简单理解类似于作文模板，只需要往里面填写需要的参数。
+# SSTI:1.python的一些框架：jinja2 mako tornado django
 #     2.PHP框架：smarty twig
 #     3.java框架：jade velocity
-#模板注入：主要是程序员对代码不规范不严谨造成了模板注入漏洞，造成模板可控。
+# 模板注入：主要是程序员对代码不规范不严谨造成了模板注入漏洞，造成模板可控。
 ```
 
 **例1：[Simple_SSTI_1---bugku]：**
